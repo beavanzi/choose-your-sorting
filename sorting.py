@@ -70,10 +70,3 @@ class SelectionSort(SortingAlgorithm):
         endTime = time.time() - startTime
         return Results("SelectionSort", items, endTime)
 
-
-def runTests():
-    list1 = [5, 8, 10, 2, 1, 53, 5, 4, 90, 0]
-    list2 = [0, 90, 4, 5, 53, 1, 2, 10, 8, 5]
-    list3 = [90, 53, 1, 5, 0, 10, 8, 4, 2, 5]
-    list4 = []
-    list5 = []
