@@ -1,5 +1,5 @@
 from arrange import ArrangeRandom, ArrangeByAsc, ArrangeByDesc, ArrangeReverse
-from sorting import Results, BubbleSort, InsertionSort
+from sorting import Results, BubbleSort, SelectionSort
 
 
 def printAndSelectAlgorithms(structure: dict, inputMessage: str) -> list[str]:
@@ -45,7 +45,7 @@ def chooseAndExecuteSelectedAlgorithms(allAlgorithms: dict, arr: list, displayMs
     return results
 
 
-def chooseArrengement(arrangement: list[int]) -> list[int]:
+def chooseArrangement(arrangement: list[int]) -> list[int]:
     allArrangements = {
         "Aleatoria": ArrangeRandom(),
         "Crescente": ArrangeByAsc(),
@@ -53,35 +53,37 @@ def chooseArrengement(arrangement: list[int]) -> list[int]:
         "Invertida": ArrangeReverse()
     }
 
-    displayMsgToArrangement = "Seu arranjo é: {}\nDigite a formatação que deseja para o arranjo da maneira em que está escrita".format(initialArr)
-    arrangments: list[list] = chooseAndExecuteSelectedAlgorithms(allArrangements, arrangement, displayMsgToArrangement, 'arrange')
+    displayMsg = "Seu arranjo é: {}\nDigite a formatação que deseja para o arranjo da maneira em que está escrita".format(initialArr)
+    arrangements: list[list] = chooseAndExecuteSelectedAlgorithms(allArrangements, arrangement, displayMsg, 'arrange')
 
-    return arrangments[0]
+    print("Seu arranjo agora é: {}\n".format(arrangements[0]))
+    return arrangements[0]
 
 
-def chooseSorting(arrengment: list[int]) -> list[Results]:
-    allAlgo = {
+def chooseSorting(arrangement: list[int]) -> list[Results]:
+    allSortings = {
         "BubbleSort": BubbleSort(),
-        "InsertionSort": InsertionSort(),
+        "SelectionSort": SelectionSort(),
     }
 
     displayMsg = "Digite o nome dos algoritmos que quer selecionar da maneira em que estão escritos, separados APENAS por espaço"
-    results : list[Results] = chooseAndExecuteSelectedAlgorithms(allAlgo, arrengment, displayMsg, 'sort')
+    results: list[Results] = chooseAndExecuteSelectedAlgorithms(allSortings, arrangement, displayMsg, 'sort')
     return results
+
+
+def printResults(results):
+    for result in results:
+        result.printResults()
 
 
 if __name__ == '__main__':
 
     initialArr = [5, 8, 10, 2, 1, 53, 5, 4, 90, 0]
 
-    arrangement = chooseArrengement(initialArr)
-
-    print("Seu arranjo agora é: {}\n".format(arrangement))
-
+    arrangement = chooseArrangement(initialArr)
     results = chooseSorting(arrangement)
 
-    for result in results:
-        print(result.getItems())
+    printResults(results)
 
 
 
