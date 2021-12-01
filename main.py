@@ -1,66 +1,93 @@
-import random
+from arrange import ArrangeRandom, ArrangeByAsc, ArrangeByDesc, ArrangeReverse
+from sorting import Results, BubbleSort, InsertionSort
 
 
-class SequenceOptions:
-    def __init__(self):
-        self.listOfOptions: list = ["aleatoria", "invertida", "crescente", "decrescente"]
+def printAndSelectAlgorithms(structure: dict, inputMessage: str) -> list[str]:
+    for key, value in structure.items():
+        print("> ", key, "\n")
 
-    def printOptions(self):
-        for (index, entry) in enumerate(self.listOfOptions):
-            print(index, "-", entry, "\n")
+    print(inputMessage)
+    selOptions = input()
 
-    def getSequenceByIndex(self, index):
-        return self.listOfOptions[index]
+    return selOptions.split(" ")
 
 
-class Arrangement:
-    def __init__(self, items: list):
-        self.items: list = items
+def getAlgorithmsByName(structure: dict, listOfNames: list[str]) -> list:
+    selectedAlgorithms: list = []
 
-    def getItems(self):
-        return self.items
+    for name in listOfNames:
+        selectedAlgorithms.append(structure[name])
 
-    def setInverted(self):
-        self.items.reverse()
-
-    def setSortByAsc(self):
-        self.items.sort()
-
-    def setSortByDesc(self):
-        self.items.sort(reverse=True)
-
-    def setRandom(self):
-        self.items = random.sample(self.items, len(self.items))
+    return selectedAlgorithms
 
 
-def getOptions(sequence):
-    sequence.printOptions()
+def chooseAlgorithms(algorithms: dict, inputMsg: str) -> list:
+    names: list[str] = printAndSelectAlgorithms(algorithms, inputMsg)
+    algorithms: list = getAlgorithmsByName(algorithms, names)
 
-    print("q - Sair\n")
+    return algorithms
 
 
-def getMenu():
-    sequence = SequenceOptions()
+def executeSelectedAlgorithms(selectedAlgorithms: list, arr: list, execution):
+    results: list = []
 
-    getOptions(sequence)
+    for algo in selectedAlgorithms:
+        result = getattr(algo, execution)(arr)
+        results.append(result)
 
-    arrangement = Arrangement([5, 8, 10, 2, 1, 53, 5, 4, 90, 0])
+    return results
 
-    selection = input("Selecione a ordem do arranjo:")
 
-    while selection != 'q':
-        if selection == :
-            print()
-        elif selection == '2':
-            print(selection)
-        elif selection == '3':
-            print(selection)
-        elif selection == '4':
-            print(selection)
-        else:
-            print("Opção Inválida!")
-        selection = input("Selecione a ordem do arranjo:")
+def chooseAndExecuteSelectedAlgorithms(allAlgorithms: dict, arr: list, displayMsg: str, execution) -> list:
+    selectedAlgorithms: list = chooseAlgorithms(allAlgorithms, displayMsg)
+    results: list = executeSelectedAlgorithms(selectedAlgorithms, arr, execution)
+
+    return results
+
+
+def chooseArrengement(arrangement: list[int]) -> list[int]:
+    allArrangements = {
+        "Aleatoria": ArrangeRandom(),
+        "Crescente": ArrangeByAsc(),
+        "Decrescente": ArrangeByDesc(),
+        "Invertida": ArrangeReverse()
+    }
+
+    displayMsgToArrangement = "Seu arranjo é: {}\nDigite a formatação que deseja para o arranjo da maneira em que está escrita".format(initialArr)
+    arrangments: list[list] = chooseAndExecuteSelectedAlgorithms(allArrangements, arrangement, displayMsgToArrangement, 'arrange')
+
+    return arrangments[0]
+
+
+def chooseSorting(arrengment: list[int]) -> list[Results]:
+    allAlgo = {
+        "BubbleSort": BubbleSort(),
+        "InsertionSort": InsertionSort(),
+    }
+
+    displayMsg = "Digite o nome dos algoritmos que quer selecionar da maneira em que estão escritos, separados APENAS por espaço"
+    results : list[Results] = chooseAndExecuteSelectedAlgorithms(allAlgo, arrengment, displayMsg, 'sort')
+    return results
 
 
 if __name__ == '__main__':
-    getMenu()
+
+    initialArr = [5, 8, 10, 2, 1, 53, 5, 4, 90, 0]
+
+    arrangement = chooseArrengement(initialArr)
+
+    print("Seu arranjo agora é: {}\n".format(arrangement))
+
+    results = chooseSorting(arrangement)
+
+    for result in results:
+        print(result.getItems())
+
+
+
+
+
+
+
+
+
